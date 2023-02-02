@@ -1,0 +1,75 @@
+1. Git Rebase
+
+If I run a merge, git will stuff all of my changes from my feature branch into one large merge 
+commit that contains ALL of my feature branch changes. It will then place this special merge commit onto master.
+ When this happens, the tree will show your feature branch, as well as the master branch. Going further, 
+if you imagine working on a team with other developers,
+ our git tree can become complex: displaying everybody else’s branches and merges.
+
+Now let’s take a look at how rebase would handle this same situation. Instead of doing a git merge, I’ll do a git rebase.
+ What rebase will do is take all of the commits on your feature branch and move them on top of the master commits. 
+Behind the scenes, git is actually blowing away the feature branch commits and 
+duplicating them as new commits on top of the master branch (remember, under the hood, commit objects are immutable and immovable).
+ What you get with this approach is a nice clean tree with all your commits laid out nicely in a row, like a timeline. Easy to trace.
+
+When I start development I always make sure the code on my local machine is synced to the latest commit from remote master
+
+# With my local master branch checked out
+git pull
+Next, I’ll check out a new branch so I can write and commit code to this branch – keeping my work separated from the master branch
+
+git checkout -b my_cool_feature
+As I’m developing my feature, I’ll make a few commits…
+
+git add .
+git commit -m 'This is a new commit, yay!'
+
+Now that I’m done developing my feature, I want to merge my changes back into remote master.
+ To begin this process I’ll switch back to local master branch and pull the latest changes. 
+This ensures my local machine has any new commits submitted by my teammates.
+
+git checkout master
+git pull
+What I want to do now is make sure my feature will jive with any new changes from remote master.
+ To do this, I’ll checkout my feature branch and rebase against my local master.
+ This will re-anchor my branch against the latest changes I just pulled from remote master. 
+Additionally at this point, Git will let me know if I have any conflicts and I can take care of them on my branch
+
+git checkout my_cool_feature
+git rebase master
+Now that my feature branch doesn’t have any conflicts, I can switch back to my master branch and place my changes onto master.
+
+git checkout master
+git rebase my_cool_feature
+Since I synced with remote master before doing the rebase, I should be able to push my changes up to remote master without issues.
+
+git push
+
+
+
+
+2.Git Merge Squash (Combining git commits)
+
+I’ll need to get my commits back onto mainline, and I can use merge or rebase to do that; however, with either solution,
+ all my local branch commits would be preserved. Usually, preserving commits like this is a good idea, 
+but let’s say you made a typo somewhere and had to create another commit to fix the spelling error.
+ Or we have a bunch of local commits related to a bug fix, but you’d really rather just have all of those related commits under 
+one roof. Enter squashing.
+
+Squashing allows us to rewrite history and combine together commits.
+
+With my bug fix branch checked out, I’ll start by running the interactive rebase command with HEAD~3. 
+This lets Git know I want to operate on the last three commits back from HEAD.
+
+git rebase -i HEAD~3
+
+Git will open up your default terminal text editor (most likely vim) and present you with a list of commits:
+
+There are a couple options here, but we’ll go ahead and mark commits we’d like to meld with it’s successor
+ by changing pick to squash. (If you’re using VIM, type i to enter insert mode)
+
+Press ESC then type :wq to save and exit the file (if you are using VIM)
+
+At this point Git will pop up another dialog where you can rename the commit message of the new, larger squashed commit:
+
+
