@@ -5,7 +5,7 @@ commit that contains ALL of my feature branch changes. It will then place this s
  When this happens, the tree will show your feature branch, as well as the master branch. Going further, 
 if you imagine working on a team with other developers,
  our git tree can become complex: displaying everybody else’s branches and merges.
-
+dhdddxd
 Now let’s take a look at how rebase would handle this same situation. Instead of doing a git merge, I’ll do a git rebase.
  What rebase will do is take all of the commits on your feature branch and move them on top of the master commits. 
 Behind the scenes, git is actually blowing away the feature branch commits and 
